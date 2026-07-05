@@ -14,10 +14,20 @@
  *     A 2D vector of integers (0 or 1).
  */
 std::vector<std::vector<int>> generate_shape(int n, const std::string& shape) {
+    std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
 
-    // WRITE YOUR CODE HERE
+    if (shape == "checkerboard") {
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                grid[i][j] = (i + j) % 2;
+    } else if (shape == "diamond") {
+        int center = n / 2;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                grid[i][j] = (std::abs(i - center) + std::abs(j - center) <= center) ? 1 : 0;
+    }
 
-    return std::vector<std::vector<int>>(n, std::vector<int>(n, 0));
+    return grid;
 }
 
 

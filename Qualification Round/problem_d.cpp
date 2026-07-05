@@ -10,10 +10,26 @@ using namespace std;
  * @return vector {hp1, hp2} each clamped to min 0
  */
 vector<int> processGame(vector<vector<int>> events, int H) {
+    int hp1 = H, hp2 = H;
 
-    // WRITE YOUR CODE HERE
+    stable_sort(events.begin(), events.end(), [](const vector<int>& a, const vector<int>& b) {
+        return a[1] < b[1];
+    });
 
-    return {0, 0};
+    int i = 0, n = events.size();
+    while (i < n) {
+        int currentFrame = events[i][1];
+        
+        while (i < n && events[i][1] == currentFrame) {
+            if (events[i][0] == 1) hp2 -= events[i][2];
+            else                   hp1 -= events[i][2];
+            i++;
+        }
+        // Only check KO after the entire frame is resolved
+        if (hp1 <= 0 || hp2 <= 0) break;
+    }
+
+    return {max(0, hp1), max(0, hp2)};
 }
 
 
